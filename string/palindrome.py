@@ -32,33 +32,25 @@ def is_palindrome(s):
     if not s:
         return False
 
-    floor, ceiling = 0, len(s) - 1
-    while floor < ceiling:
-        #print("s[floor]: {}, s[ceiling]: {}".format(s[floor], s[ceiling]))
-        # non characters, skip
-        if (s[floor] < '0'
-            or (s[floor] > '9' and s[floor] < 'A')
-            or (s[floor] > 'Z' and s[floor] < 'a')
-            or s[floor] > 'z' 
-            ):
-            floor += 1
+    left, right = 0, len(s) - 1
+    while left < right:
+        #print("s[left]: {}, s[right]: {}".format(s[left], s[right]))
+        # non alphanumeric, skip
+        if not s[left].isalnum():
+            left += 1
             continue
 
-        # non characters, skip
-        if (s[ceiling] < '0'
-            or (s[ceiling] > '9' and s[ceiling] < 'A')
-            or (s[ceiling] > 'Z' and s[ceiling] < 'a')
-            or s[ceiling] > 'z' 
-            ):
-            ceiling -= 1    
+        # non alphanumeric, skip
+        if not s[right].isalnum():
+            right -= 1    
             continue
 
-        # convert to lower case and compare, return False directly
-        if s[floor].lower() != s[ceiling].lower():
+        # convert to lower case and compare, if not equal then return False directly
+        if s[left].lower() != s[right].lower():
             return False
 
-        floor += 1
-        ceiling -= 1
+        left += 1
+        right -= 1
 
     return True
 
