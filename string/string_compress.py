@@ -38,23 +38,26 @@ class Solution:
         """
         """
         Time complexity: O(N), for loop through chars
-        Space complexity: O(N), need to store compressed string
+        Space complexity: O(1), modify original chars in place
         """
         if len(chars) <= 1:
             return len(chars)
 
-        # first store it to a new list
-        compressed_s = []
+        # initialize last char and char num
         last_char = chars[0]
-        char_num = 1        
+        char_num = 1 
+        # modify chars inplace, use an index to store which index should be used
+        index_chars = 0       
         for i in range(1, len(chars)):
             if last_char != chars[i]:
                 # find a new char
-                compressed_s.append(last_char)
+                chars[index_chars] = last_char
+                index_chars += 1
                 if char_num > 1:
                     # append the num of chars
                     for j in str(char_num):
-                        compressed_s.append(j)
+                        chars[index_chars] = j
+                        index_chars += 1
                 
                 # reset char_num and replace last_char with the new char
                 char_num = 0
@@ -63,11 +66,13 @@ class Solution:
             char_num += 1
 
         # need to append last char
-        compressed_s.append(last_char)
+        chars[index_chars] = last_char
+        index_chars += 1
         if char_num > 1:
             # append the num of chars
             for j in str(char_num):
-                compressed_s.append(j)
+                chars[index_chars] = j
+                index_chars += 1
 
-        return len(compressed_s)
+        return index_chars
 
