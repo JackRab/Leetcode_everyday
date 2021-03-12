@@ -40,39 +40,28 @@ class Solution:
         Time complexity: O(N), for loop through chars
         Space complexity: O(1), modify original chars in place
         """
-        if len(chars) <= 1:
-            return len(chars)
+        
+        # index to write, and a num to count how many repetitions of current char
+        i_write, num_chars = 0, 0
+        for i_read, c in enumerate(chars):
 
-        # initialize last char and char num
-        last_char = chars[0]
-        char_num = 1 
-        # modify chars inplace, use an index to store which index should be used
-        index_chars = 0       
-        for i in range(1, len(chars)):
-            if last_char != chars[i]:
-                # find a new char
-                chars[index_chars] = last_char
-                index_chars += 1
-                if char_num > 1:
-                    # append the num of chars
-                    for j in str(char_num):
-                        chars[index_chars] = j
-                        index_chars += 1
-                
-                # reset char_num and replace last_char with the new char
-                char_num = 0
-                last_char = chars[i]
+            # read one more char
+            num_chars += 1
 
-            char_num += 1
+            # use short-circuit evaluation to check if i_read is the last index or 
+            # next char is not the same as current char
+            if i_read == len(chars)-1 or chars[i_read+1] != chars[i_read]:
+                chars[i_write] = chars[i_read]
+                i_write += 1
 
-        # need to append last char
-        chars[index_chars] = last_char
-        index_chars += 1
-        if char_num > 1:
-            # append the num of chars
-            for j in str(char_num):
-                chars[index_chars] = j
-                index_chars += 1
+                # if more than one repetitions, then need to record how many
+                if num_chars > 1:
+                    for j in str(num_chars):
+                        chars[i_write] = j 
+                        i_write += 1
 
-        return index_chars
+                # reset num_chars to 0
+                num_chars = 0
 
+
+        return i_write
