@@ -18,15 +18,24 @@ class Solution:
         """
         Do not return anything, modify matrix in-place instead.
         """
-
+        """
+        Time complexity: O(N), suppose N = n*n, since we only loop through at most (n//2+1)(n//2) approx n*n/4 times
+        Space complexity: O(1)
+        """
+        # get the dimension of n
         n = len(matrix)
-        # suppose we can allocate another matrix first
-        res_mat = [[0]*n for i in range(n)]
 
-        for j in range(n):
-            for i in range(n):
-                res_mat[i][j] = matrix[n-1-j][i]
-
-        print(res_mat)
-
+        # a general pattern is matrix[i][j] = matrix[n-1-j][i]
+        for i in range(n//2 + n%2):
+            for j in range(n//2):
+                # store matrix[i][j] first 
+                tmp = matrix[i][j]
+                # for i=i, j=j, use genenal formula, i' = n-1-j, j' = i
+                matrix[i][j] = matrix[n-1-j][i]
+                # for i = n-1-j, j = i, -> , i' = n-1-i, j'= n-1-j
+                matrix[n-1-j][i] = matrix[n-1-i][n-1-j]
+                # for i = n-1-i, j = n-1-j, -> i' = n-1-(n-1-j) = j, j' = n-1-i
+                matrix[n-1-i][n-1-j]= matrix[j][n-1-i]
+                # for i = j, j = n-1-i, -> i' = n-1-(n-1-i) = i, j' = i, so it's tmp
+                matrix[j][n-1-i] = tmp
 
