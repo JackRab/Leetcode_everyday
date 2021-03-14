@@ -30,6 +30,9 @@ class Solution:
         if n == 0:
             return 0
 
+        # init an array to store the max sum of the contiguous subarray which has num[i] as its end, 
+        # then we can convert this into a dynamic programming problem, that is: 
+        # maxSubArray(nums[:i]) = maxSubArray(nums[:i-1]) < 0 ? nums[i] : maxSubArray(nums[:i-1]) + nums[i]
         dp = [0]*n
         dp[0] = nums[0]
         result = dp[0]
