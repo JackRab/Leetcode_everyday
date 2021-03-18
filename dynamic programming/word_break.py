@@ -38,27 +38,25 @@ class Solution:
         Return true if s can be segmented into a space-separated sequence of one or more dictionary words
         """
         """
-        The idea is to substract a word from s and see if the rest can be breaked (recursive)
+        The idea is the following:
+        set d[0] to true and for i > 0
+        for each index i: and d[i] is true if a word in the dict that ends at i-1 and d[j] is true, where j = i - len(word)
+        e.g. s = "leetcode", wordDict = ["leet","code"], 
+        d[4] = true because a word 'leet' ends at 3 and d[0]
+        d[8] = true because a word 'code' ends at 7 and d[4] is true
         """
-        print(s)
-        # obtain the length of each words
-        set_length = set([len(word) for word in wordDict])
+        """
+        Time complexity: O(n*m), where m is the length of the word dict, if it's small relative to n, then O(n)
+        Space complexity: O(n), use a list to indicator at an index it's true or false
+        """
 
-        # base case
-        if len(s) < min(set_length):
-            return False
-        
-        if s in wordDict:
-            return True 
-        
+        d =[True] + [False]*len(s)
 
-        result = False
-        for i in set_length:
-            if s[:i] in wordDict:
-                # use or for early termination if we have find a break, no need to continue
-                result = result or self.wordBreak(s[i:], wordDict)
-            
-        return result
+        for i in range(1, len(s)+1):
+            for word in wordDict:
+                j = i - len(word)
+                if d[j]:
+                    if word == s[j:i]:
+                        d[i] = True
 
-sol = Solution()
-sol.wordBreak(s = "aaab", wordDict = ["a","aa","aaa"])
+        return d[-1]
