@@ -31,25 +31,33 @@ class Solution:
         Do not return anything, modify nums1 in-place instead.
         """
         """
-        First suppose we could create a new array of length m+n
+        Idea: from the last index of nums1 and move to the left
+        """
+        """
+        Time complexity: O(m+n)
+        Space complexity: O(1)
         """
         if not nums1:
-            return nums2
+            return
         if not nums2:
-            return nums1
+            return
 
-        new_array = [None]*(m+n)
-
-        index_1, index_2 = 0, 0
-        for i in range(m+n):
-            if (index_1<=m-1) and (nums1[index_1] <= nums2[index_2]):
-                new_array[i] = nums1[index_1]
-                index_1 += 1
+        i1, i2, i = m-1, n-1, m+n-1
+        while i >= 0:
+            if i1 >= 0 and i2>=0:
+                if nums1[i1] <= nums2[i2]:
+                    # put the num from nums2 to index i
+                    nums1[i] = nums2[i2]
+                    i2 -= 1
+                else:
+                    # put the num from nums1 to index i
+                    nums1[i] = nums1[i1]
+                    i1 -= 1
+            elif i1<0:
+                nums1[i] = nums2[i2]
+                i2 -= 1
             else:
-                new_array[i] = nums2[index_2]
-                index_2 += 1
-
-        return new_array
-
-if __name__ == '__main__':
-    assert Solution().merge([1, 2, 3], 3, [2, 3, 4], 3) == [1, 2, 2, 3, 3, 4]
+                nums1[i] = nums1[i1]
+                i1 -= 1
+            
+            i -= 1
