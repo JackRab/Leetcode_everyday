@@ -30,32 +30,27 @@ class Solution:
         """
         """
         The idea is to first create a dict to store every num in the list, with the num as key and its index as value, 
-        then loop to see if the complement of the num is in the dict, special attention to when the complement is the same num
+        then loop to see if the complement of the num is in the dict
         """
         """
-        Time complexity: O(n) since we loop over nums twice (search the dict is O(1))
+        Time complexity: O(n) since we loop over nums once (search the dict is O(1))
         Space complexity: O(n) to create the dict
         """
         dict_nums = {}
-        for i, n in enumerate(nums):
-            dict_nums[n] = dict_nums.get(n, []) + [i]
+        res = [-1, -1]
 
-        for n in nums:
+        for i, n in enumerate(nums):
             c = target - n
-            if c != n:
-                if c in dict_nums:
-                    # find the complement
-                    return [dict_nums[n][0], dict_nums[c][0]]
-            else:
-                # the complement is the same as n
-                if len(dict_nums[n]) >= 2:
-                    # must have at least two n
-                    return dict_nums[n][:2]
+            if c in dict_nums:
+                res[0] = dict_nums[c]
+                res[1] = i
+
+            dict_nums[n] = i
             
-        return []
+        return res
 
 if __name__ == '__main__':
     assert Solution().twoSum([2,7,11,15], 9) == [0, 1]
     assert Solution().twoSum([3, 2, 4], 6) == [1, 2]
     assert Solution().twoSum([3, 3], 6) == [0, 1]
-    assert Solution().twoSum([3, 3], 5) == []
+    assert Solution().twoSum([3, 3], 5) == [-1, -1]
