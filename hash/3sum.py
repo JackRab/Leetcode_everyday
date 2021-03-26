@@ -47,6 +47,9 @@ class Solution:
 
             a = nums[i]
 
+            if a > 0:
+                break
+
             while start < end:
                 b = nums[start]
                 c = nums[end]
