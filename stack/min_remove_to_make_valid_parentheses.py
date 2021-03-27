@@ -47,38 +47,27 @@ class Solution:
         Time complexity: O(n), need to loop over s twice
         Space complexity: O(n), need to store parentheses
         """
-
-        # use a dict to store the index of parentheses and whether it's not matched
-        dict_paretheses = {}
+        # use a list to store s
+        s_list = list(s)
 
         # use a list as a stack to store left parentheses indexes
         parentheses = []
         for i, c in enumerate(s):
             if c == ')':
-                if len(parentheses) == 0:
+                if not parentheses:
                     # this one need to be removed
-                    dict_paretheses[i] = 1
+                    s_list[i] = ''
                 else: # have parentheses left
-                    paird_index = parentheses.pop()
-                    # keep this paired parenthesis
-                    dict_paretheses[paird_index] = 0
+                    parentheses.pop()
 
             if c == '(':
                 parentheses.append(i)
-                # this one need to be paired
-                dict_paretheses[i] = 1
 
-        # generate results based on the parenthesis match result
-        res = []
-        for i, c in enumerate(s):
-            if c == '(' or c == ')':
-                if dict_paretheses.get(i, 0) == 0:
-                    # keep this parenthesis
-                    res.append(c)
-            else:
-                res.append(c)
-
-        return ''.join(res)
+        # remove left '('
+        while parentheses:
+            s_list[parentheses.pop()] = ''
+        
+        return ''.join(s_list)
 
 if __name__ == '__main__':
     assert Solution().minRemoveToMakeValid("lee(t(c)o)de)") == "lee(t(c)o)de"
