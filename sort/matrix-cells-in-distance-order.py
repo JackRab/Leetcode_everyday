@@ -46,20 +46,10 @@ class Solution:
         Time complexity: sort is O(n log n) where n = RC, other loops are O(n), so in total it's O(n)
         Space complexity: O(n)
         """
-        index_dist = dict()
-        for i in range(R):
-            for j in range(C):
-                index = i*C + j
-                dist = abs(i - r0) + abs(j - c0)
-                index_dist[index] = dist
-
-        res = []
-        for k, v in sorted(index_dist.items(), key=lambda item: item[1]):
-            i = k // C
-            j = k % C 
-            res.append([i, j])
-
-        return res
+        dist = lambda point: abs(point[0]-r0) + abs(point[1] - c0)
+        points = [[i, j] for i in range(R) for j in range(C)] 
+        
+        return sorted(points, key=dist)
 
 if __name__ == '__main__':
     Solution().allCellsDistOrder(2, 3, 1, 2)
