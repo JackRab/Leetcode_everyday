@@ -33,16 +33,8 @@ class Solution:
         Space complexity: O(n)
         """
         hash_arr2 = {v:i for i, v in enumerate(arr2)}
-
         arr1_sorted = sorted(arr1)
-        start = len(hash_arr2)
-        for n in arr1_sorted:
-            if n not in hash_arr2:
-                hash_arr2[n] = start 
-                start += 1
-
-        res = sorted(arr1, key=hash_arr2.get)
-        return res
+        return sorted(arr1_sorted, key=lambda a: hash_arr2.get(a, a+len(arr2)))
 
 if __name__ == '__main__':
     assert Solution().relativeSortArray([2,3,1,3,2,4,6,7,9,2,19], [2,1,4,3,9,6]) == [2,2,2,1,4,3,3,9,6,7,19]
