@@ -35,20 +35,20 @@ class Solution:
         """
         """
         Time complexity: O(n) since we need to visit all nodes once
-        Space complexity: O(n) since we need a queue to store all nodes
+        Space complexity: O(b) where b is the longest width of tree
         """
         queue = [root] # initialize a queue
 
         sum = 0
         while queue:
             current = queue.pop(0)
-            if current.val>=low and current.val<=high:
+            if current.val >= low and current.val <= high:
                 sum += current.val
 
-            if current.left:
+            if current.val > low and current.left:
                 queue.append(current.left)
 
-            if current.right:
+            if current.val < high and current.right:
                 queue.append(current.right)
 
         return sum
