@@ -39,10 +39,14 @@ There are no leading or trailing spaces.
 class Solution:
     def truncateSentence(self, s: str, k: int) -> str:
         """
-        Return the sentence​​​​​​ after truncating it
+        Return the sentence after truncating it
         """
         """
         The idea is to separate s into words and then concatenate the first k words into a sentence
+        """
+        """
+        Time complexity: O(n) where n is the number of chars in the string
+        Space complexity: O(n) since the number of words is proportional to the number of chars
         """
 
         words = s.split(' ')
