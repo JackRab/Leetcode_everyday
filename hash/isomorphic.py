@@ -42,20 +42,20 @@ class Solution:
         if len(s) != len(t):
             return False
 
-        mapping = dict()
-        mapping_inverse = dict()
-        for i in range(len(s)):
-            if s[i] in mapping:
-                if mapping[s[i]] != t[i]:
+        map_st = {}
+        map_ts = {}
+        for c1, c2 in zip(s, t):
+            if c1 in map_st:
+                if map_st[c1] != c2:
                     return False
             else:
-                mapping[s[i]] = t[i]
+                map_st[c1] = c2
 
-            if t[i] in mapping_inverse:
-                if mapping_inverse[t[i]] != s[i]:
+            if c2 in map_ts:
+                if map_ts[c2] != c1:
                     return False
             else:
-                mapping_inverse[t[i]] = s[i]
+                map_ts[c2] = c1
 
         return True
 
