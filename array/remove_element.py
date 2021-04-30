@@ -24,27 +24,21 @@ Constraints:
 
 from typing import List
 
-def removeElement(nums: List[int], val: int) -> int:
-    # a solution is to find the max of nums and replace all val in nums with max+1, then sort nums ascending in place
-    # time complexity: sort is O(n logn), the other two for loops in O(n), so total time complexity is O(n logn)
-    # space complexity: O(1)
-    
-    if not nums:
-            return 0
+class Solution:
+    def removeElement(self, nums: List[int], val: int) -> int:
+        """
+        A better solution is to sort nums based on whether the element is equal to val
+        and then return the index of first val in nums
+        """
+        """
+        Time complexity: O(NlogN) since we need to sort nums
+        Space complexity: O(1)
+        """
+        nums.sort(key=lambda x: x == val)
 
-    # first find the max of nums
-    max_nums = nums[0]
-    for n in nums:
-        max_nums = max(max_nums, n)
-    # then replace val in nums with max_nums + 1 and calculate the returned length
-    # init length as the length of nums, then substract the number of appearance of val in nums
-    length = len(nums)
-    for i in range(len(nums)):
-        if nums[i] == val:
-            nums[i] = max_nums + 1
-            length -= 1
-    # sort nums in place
-    nums.sort()
-    return length 
+        if val in nums:
+            return nums.index(val)
+        else:
+            return len(nums)
 
 
