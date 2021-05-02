@@ -38,32 +38,25 @@ class Solution:
         Space complexity: O(n)
         """
         nums.sort()
-        res = []
         res_set = set()
-        
+        res = []
         for i in range(len(nums)-2):
-            start = i + 1
-            end = len(nums) - 1
-
-            a = nums[i]
-
-            if a > 0:
-                break
-
-            while start < end:
-                b = nums[start]
-                c = nums[end]
-                if a + b + c == 0:
-                    if tuple([a, b, c]) not in res_set:
-                        res.append([a, b, c])
-                        res_set.add(tuple([a, b, c]))
-                    start += 1
-                    end -= 1
-                elif a + b + c > 0:
-                    end -= 1
+            j, k = i+1, len(nums) - 1
+            while j < k:
+                sum = nums[i] + nums[j] + nums[k]
+                if sum > 0:
+                    k -= 1
+                elif sum < 0:
+                    j += 1
                 else:
-                    start +=1
-                
+                    candidate = [nums[i], nums[j], nums[k]]
+                    if tuple(candidate) not in res_set:
+                        res_set.add(tuple(candidate))
+                        res.append(candidate)
+
+                    k -= 1
+                    j += 1
+
         return res
 
 if __name__ == '__main__':
