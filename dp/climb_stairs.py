@@ -26,7 +26,10 @@ Constraints:
 1 <= n <= 45
 """
 class Solution:
-    def climbStairs(self, n: int) -> int:
+    def __init__(self):
+        self.memo = {}
+
+    def climbStairs(self, n):
         """
         Return distinct ways can you climb to the nth stair
         """
@@ -35,19 +38,17 @@ class Solution:
         Time complexity: O(n)
         Space complexity: O(1)
         """
-        if n<=2:
-            return n
+        if n in [1, 2]:
+            return n 
 
-        pre1, pre2 = 2, 1
-        ways = 1
-        for i in range(3, n+1):
-            ways = pre1 + pre2
-            pre2 = pre1
-            pre1 = ways
+        if n in self.memo:
+            return self.memo[n]
 
-        return ways 
+        num = self.climbStairs(n-1) + self.climbStairs(n-2)
+        self.memo[n] = num 
+        return num
 
 if __name__ == '__main__':
     assert Solution().climbStairs(2) == 2
     assert Solution().climbStairs(3) == 3
-    assert Solution().climbStairs(4) == 5
+    assert Solution().climbStairs(45) == 1836311903
