@@ -32,6 +32,17 @@ Explanation: The groups are "a" and "bbbbbbbbbbbb". This compresses to "ab12".
 from typing import List
 
 class Solution:
+    def encode(self, chars, num, index, char):
+        chars[index] = char
+        index += 1
+        if num > 1:
+            length = len(str(num))
+            for j in list(str(num)):
+                chars[index] = j
+                index += 1
+            num = 1
+        return num, index
+    
     def compress(self, chars: List[str]) -> int:
         """
         Return the length of comprese string
@@ -40,28 +51,17 @@ class Solution:
         Time complexity: O(N), for loop through chars
         Space complexity: O(1), modify original chars in place
         """
-        
-        # index to write, and a num to count how many repetitions of current char
-        i_write, num_chars = 0, 0
-        for i_read, c in enumerate(chars):
+        last = chars[0]
+        num = 0
+        index = 0
+        for i, c in enumerate(chars):
+            if c != last:
+                num, index = self.encode(chars, num, index, last)
+                last = c
+            else:
+                num += 1
 
-            # read one more char
-            num_chars += 1
+            if i == len(chars)-1:
+                num, index = self.encode(chars, num, index, last)
 
-            # use short-circuit evaluation to check if i_read is the last index or 
-            # next char is not the same as current char
-            if i_read == len(chars)-1 or chars[i_read+1] != chars[i_read]:
-                chars[i_write] = chars[i_read]
-                i_write += 1
-
-                # if more than one repetitions, then need to record how many
-                if num_chars > 1:
-                    for j in str(num_chars):
-                        chars[i_write] = j 
-                        i_write += 1
-
-                # reset num_chars to 0
-                num_chars = 0
-
-
-        return i_write
+        return index
