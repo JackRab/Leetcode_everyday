@@ -32,16 +32,13 @@ class Solution:
         Time complexity: O(N)
         Space complexity: O(1)
         """
-        minimum = prices[0]
-        profit = 0
-        for i in range(1, len(prices)):
-            if minimum > prices[i]:
-                minimum = prices[i]
-            
-            if prices[i] - minimum > profit:
-                profit = prices[i] - minimum
+        max_profit = 0
+        min_price = prices[0]
+        for p in prices[1:]:
+            max_profit = max(max_profit, p - min_price)
+            min_price = min(min_price, p)
 
-        return profit
+        return max_profit
 
 if __name__ == '__main__':
     assert Solution().maxProfit([7,1,5,3,6,4]) == 5
