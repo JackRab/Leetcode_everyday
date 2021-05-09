@@ -39,35 +39,26 @@ class Solution:
         Time complexity: O(n^2)
         Space complexity: O(n^2)
         """
-        if len(s) <= 1:
-            return s
+        res = ''
+        for i in range(len(s)):
+            # even case like 'aa'
+            tmp = self.expandAndCheck(s, i, i+1)
+            if len(tmp) > len(res):
+                res = tmp
 
-        # maximum store the current maximum length
-        maximum = 1
-        last = s[0]
-        palindromes = set()
-        for l in range(1, len(s)+1):
-            # check if there are palindrome of length l
-            for i in range(len(s)-l+1):
-                if l == 1:
-                    palindromes.add(s[i:i+l])
-                    maximum = l
-                    last = s[i:i+l]
-                elif l == 2:
-                    if s[i] == s[i+1]:
-                        palindromes.add(s[i:i+l])
-                        maximum = l
-                        last = s[i:i+l]
-                else:
-                    if s[i] == s[i+l-1] and s[i+1:i+l-1] in palindromes:
-                        palindromes.add(s[i:i+l])
-                        maximum = l
-                        last = s[i:i+l]
+            # odd case like 'aba'
+            tmp = self.expandAndCheck(s, i, i)
+            if len(tmp) > len(res):
+                res = tmp
 
-            if l - maximum > 2:
-                break
+        return res
 
-        return last
+    def expandAndCheck(self, s: str, l, r):
+        while l>=0 and r<=len(s)-1 and s[l] == s[r]:
+                l -= 1
+                r += 1
+
+        return s[l+1:r]
 
 if __name__ == '__main__':
     assert Solution().longestPalindrome('abac') == 'aba'
