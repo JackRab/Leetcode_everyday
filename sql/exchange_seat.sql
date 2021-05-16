@@ -43,3 +43,11 @@ SELECT (CASE WHEN MOD(id, 2) != 0 AND max_id != id THEN id+1
        END) AS id, student
 FROM seat, (SELECT MAX(id) AS max_id FROM seat) AS mid
 ORDER BY id ASC;
+
+/* solution 2: use correlated query */
+SELECT CASE WHEN id%2 = 1 AND id = (SELECT MAX(id) FROM seat) THEN id
+       WHEN id%2 = 1 AND id != (SELECT MAX(id) FROM seat) THEN id + 1
+       ELSE id - 1
+       END AS id, student
+FROM seat
+ORDER BY id;
