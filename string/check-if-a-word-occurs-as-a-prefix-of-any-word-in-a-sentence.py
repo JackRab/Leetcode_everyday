@@ -37,12 +37,11 @@ class Solution:
         Time complexity: O(n) where n is the number of words
         Space complexity: O(n)
         """
-        words = sentence.split()
-
-        for i, word in enumerate(words):
-            if word.find(searchWord) == 0:
-                return i + 1
-
+        words = sentence.split(' ')
+        for i, word in enumerate(words, 1):
+            if word.startswith(searchWord):
+                return i
+            
         return -1
             
 if __name__ == '__main__':
