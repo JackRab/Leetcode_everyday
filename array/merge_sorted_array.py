@@ -37,27 +37,18 @@ class Solution:
         Time complexity: O(m+n)
         Space complexity: O(1)
         """
-        if not nums1:
-            return
-        if not nums2:
-            return
-
-        i1, i2, i = m-1, n-1, m+n-1
-        while i >= 0:
-            if i1 >= 0 and i2>=0:
-                if nums1[i1] <= nums2[i2]:
-                    # put the num from nums2 to index i
-                    nums1[i] = nums2[i2]
-                    i2 -= 1
-                else:
-                    # put the num from nums1 to index i
+        i1, i2 = m-1, n-1
+        for i in range(m+n-1, -1, -1):
+            if i1 >= 0 and i2 >= 0:
+                if nums1[i1] >= nums2[i2]:
                     nums1[i] = nums1[i1]
                     i1 -= 1
-            elif i1<0:
-                nums1[i] = nums2[i2]
-                i2 -= 1
-            else:
+                else:
+                    nums1[i] = nums2[i2]
+                    i2 -= 1
+            elif i1 >= 0:
                 nums1[i] = nums1[i1]
                 i1 -= 1
-            
-            i -= 1
+            else:
+                nums1[i] = nums2[i2]
+                i2 -= 1

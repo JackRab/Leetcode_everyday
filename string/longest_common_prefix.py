@@ -32,9 +32,12 @@ def find_longest_common_prefix(strs):
         The idea is to check from the first char to the char that is not a common component
         the maximum possible prefix is of min_num length
         """
+        min_length = min([len(str) for str in strs])
         res = []
-        for s in strs[0]:
-            if all([s in str for str in strs[1:]]):
+        for i, s in enumerate(strs[0]):
+            if i == min_length:
+                break
+            if all([s == str[i] for str in strs[1:]]):
                 res.append(s)
             else:
                 break
