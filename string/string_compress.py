@@ -32,17 +32,15 @@ Explanation: The groups are "a" and "bbbbbbbbbbbb". This compresses to "ab12".
 from typing import List
 
 class Solution:
-    def encode(self, chars, num, index, char):
-        chars[index] = char
-        index += 1
+    def encode(self, chars, write, char, num):
+        chars[write] = char
+        write += 1
         if num > 1:
-            length = len(str(num))
-            for j in list(str(num)):
-                chars[index] = j
-                index += 1
-            num = 1
-        return num, index
-    
+            for c in str(num):
+                chars[write] = c
+                write += 1
+        return write
+
     def compress(self, chars: List[str]) -> int:
         """
         Return the length of comprese string
@@ -51,17 +49,16 @@ class Solution:
         Time complexity: O(N), for loop through chars
         Space complexity: O(1), modify original chars in place
         """
-        last = chars[0]
+        write = 0
         num = 0
-        index = 0
         for i, c in enumerate(chars):
-            if c != last:
-                num, index = self.encode(chars, num, index, last)
-                last = c
-            else:
-                num += 1
-
+            num += 1
             if i == len(chars)-1:
-                num, index = self.encode(chars, num, index, last)
-
-        return index
+                # last char
+                write = self.encode(chars, write, c, num)
+                break
+            if c != chars[i+1]:
+                # different than previous
+                write = self.encode(chars, write, c, num)
+                num = 0
+        return write
