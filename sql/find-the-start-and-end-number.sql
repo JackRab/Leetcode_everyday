@@ -15,6 +15,15 @@ Since some IDs have been removed from Logs. Write an SQL query to find the start
 
 Order the result table by start_id.
 */
+/* Solution 1 */
+SELECT MIN(log_id) AS start_id, MAX(log_id) AS end_id
+FROM (
+    SELECT log_id, ROW_NUMBER() OVER(ORDER BY log_id) AS num 
+    FROM Logs
+) AS subq
+GROUP BY log_id - num;
+
+/* Solution 2 */
 SELECT l1.log_id AS start_id, l2.log_id AS end_id
 FROM
     (SELECT log_id
