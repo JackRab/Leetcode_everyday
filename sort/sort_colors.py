@@ -40,26 +40,21 @@ class Solution:
         """
         Do not return anything, modify nums in-place instead.
         """
-        if not nums:
-            return None
-
-        # one solution is to count how many of 0s, 1s, and 2s, 
-        # then put them into corresponding positions, e.g, 2 from the end
-
-        # counts stores the number of 0s, 1s, and 2s
-        counts = [0, 0, 0]
-        for n in nums:
-            counts[n] += 1
-
-        # a cheat solution
-        for i in range(len(nums)):
-            if i < counts[0]:
-                nums[i] = 0
-            elif i < counts[0]+counts[1]:
-                nums[i] = 1
+        """
+        Three pointers solution
+        """
+        p0, curr = 0, 0
+        p2 = len(nums) - 1
+        
+        while curr <= p2:
+            if nums[curr] == 0:
+                # swap nums[curr] with nums[p0]
+                nums[curr], nums[p0] = nums[p0], nums[curr]
+                p0 += 1
+                curr += 1
+            elif nums[curr] == 2:
+                # swap nums[curr] with nums[p2]
+                nums[curr], nums[p2] = nums[p2], nums[curr]
+                p2 -= 1
             else:
-                nums[i] = 2
-
-
-        
-        
+                curr += 1
