@@ -38,11 +38,36 @@ A telecommunications company wants to invest in new countries. The company inten
 
 Write an SQL query to find the countries where this company can invest.
 */
+-- Solution 1:
 SELECT co.name AS country
 FROM Person AS p
 JOIN Calls AS c
 ON p.id IN (c.caller_id, c.callee_id)
 JOIN Country AS co
 ON SUBSTR(p.phone_number, 1, 3) = co.country_code
+GROUP BY country
+HAVING AVG(duration) > (SELECT AVG(duration) FROM Calls);
+
+__ Solution 2: UNION ALL 
+SELECT country
+FROM (
+    (
+        SELECT co.name AS country, duration
+        FROM Calls AS ca
+        JOIN Person AS p
+        ON ca.caller_id = p.id
+        JOIN Country AS co
+        ON SUBSTR(p.phone_number, 1, 3) = co.country_code
+    )
+    UNION ALL
+    (
+        SELECT co.name AS country, duration
+        FROM Calls AS ca
+        JOIN Person AS p
+        ON ca.callee_id = p.id
+        JOIN Country AS co
+        ON SUBSTR(p.phone_number, 1, 3) = co.country_code
+    )
+) AS subq
 GROUP BY country
 HAVING AVG(duration) > (SELECT AVG(duration) FROM Calls);
