@@ -32,34 +32,6 @@ Write an SQL query to find the winner in each group.
 
 */
 
-WITH scores AS (
-    SELECT group_id, p.player_id, SUM(IFNULL(m1.first_score,0) + IFNULL(m2.second_score, 0)) AS score
-    FROM Players AS p 
-    LEFT JOIN Matches AS m1
-    ON p.player_id = m1.first_player
-    LEFT JOIN Matches AS m2
-    ON p.player_id = m2.second_player
-    GROUP BY group_id, p.player_id 
-    ORDER BY group_id, p.player_id
-)
-SELECT group_id, player_id
-FROM (
-    SELECT group_id, player_id, ROW_NUMBER() OVER(PARTITION BY group_id ORDER BY score DESC) AS num 
-    FROM scores
-    ORDER BY num, player_id
-) AS subq
-WHERE num = 1
-ORDER BY group_id;
-
-SELECT group_id, player_id
-FROM (
-    SELECT group_id, player_id, ROW_NUMBER() OVER(PARTITION BY group_id ORDER BY score DESC, player_id ASC) AS num 
-    FROM scores
-    ORDER BY num, player_id
-) AS subq
-WHERE num = 1
-ORDER BY group_id;
-
 WITH m AS (
     SELECT first_player AS player_id, first_score AS score
     FROM Matches
@@ -74,5 +46,11 @@ s AS (
     ON m.player_id = p.player_id
     GROUP BY p.group_id, m.player_id
 )
-
-SELECT 
+SELECT group_id, player_id
+FROM (
+    SELECT group_id, player_id, ROW_NUMBER() OVER(PARTITION BY group_id ORDER BY score DESC, player_id ASC) AS num 
+    FROM s
+    ORDER BY num, player_id
+) AS subq
+WHERE num = 1
+ORDER BY group_id;
